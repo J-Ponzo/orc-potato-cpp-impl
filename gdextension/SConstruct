@@ -1,0 +1,28 @@
+#!/usr/bin/env python
+import os
+import sys
+
+# TODO find something more flexible
+orc_path = os.path.abspath("../../../addons/open-render-craft/gdextension")
+env = SConscript(f"{orc_path}/godot-cpp/SConstruct")
+
+env.Append(CPPPATH=[
+    "src/public",
+    f"{orc_path}/src/public",
+    ])
+env.Append(LIBPATH=[f"{orc_path}/bin"])
+env.Append(LIBS=["liborc.windows.template_debug.x86_64"])
+
+env['OBJSUFFIX'] = '.o'
+
+src_dir = "src/private"
+obj_dir = "obj"
+VariantDir(obj_dir, src_dir, duplicate=0)
+sources = Glob(os.path.join(obj_dir, "*.cpp"))
+
+library = env.SharedLibrary(
+    "bin/liborcpotatocppimpl{}{}".format(env["suffix"], env["SHLIBSUFFIX"]),
+    source=sources,
+)
+
+Default(library)
