@@ -1,4 +1,4 @@
-#include "potato_cpp_scene_proxy.h"
+#include <potato_cpp_scene_proxy.h>
 #include <godot_cpp/core/class_db.hpp>
 
 using namespace godot;

@@ -1,7 +1,7 @@
-#include "register_types.h"
+#include <register_types.h>
 
-#include "public/potato_cpp_renderer.h"
-#include "public/potato_cpp_scene_proxy.h"
+#include <potato_cpp_renderer.h>
+#include <potato_cpp_scene_proxy.h>
 
 #include <impl_registry.h>
 #include <gdextension_interface.h>
@@ -17,8 +17,6 @@ void initialize_potato_cpp_module(ModuleInitializationLevel p_level) {
 
 	GDREGISTER_RUNTIME_CLASS(ORC_PotatoCPPRenderer);
 	GDREGISTER_RUNTIME_CLASS(ORC_PotatoCPPSceneProxy);
-
-	UtilityFunctions::print("[ORC] Potato C++ implementation registered");	// TODO move this in ORC_ImplRegistry
 }
 
 void uninitialize_potato_cpp_module(ModuleInitializationLevel p_level) {
