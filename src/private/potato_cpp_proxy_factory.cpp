@@ -1,8 +1,10 @@
 #include <potato_cpp_proxy_factory.h>
 #include <godot_cpp/classes/rendering_device.hpp>
 #include <godot_cpp/variant/utility_functions.hpp>
+#include <godot_cpp/classes/resource.hpp>
 #include <camera_proxy.h>
 #include <mesh_proxy.h>
+#include <rd_helper.h>
 
 using namespace godot;
 
