@@ -1,6 +1,8 @@
 #include <potato_cpp_proxy_factory.h>
 #include <godot_cpp/classes/rendering_device.hpp>
 #include <godot_cpp/variant/utility_functions.hpp>
+#include <camera_proxy.h>
+#include <mesh_proxy.h>
 
 using namespace godot;
 
@@ -11,9 +13,13 @@ Ref<ORC_ProxyObject> ORC_PotatoCPPProxyFactory::create_proxy_from_impl(Node* nod
 	Ref<ORC_ProxyObject> proxy_object;
 	
 	if (Object::cast_to<Camera3D>(node)) {
-		proxy_object.instantiate();
+		Ref<ORC_PotatoCPP_CameraProxy> cam_proxy;
+		cam_proxy.instantiate();
+		proxy_object = cam_proxy;
 	} else if (Object::cast_to<MeshInstance3D>(node)) {
-		proxy_object.instantiate();
+		Ref<ORC_PotatoCPP_MeshProxy> mesh_proxy;
+		mesh_proxy.instantiate();
+		proxy_object = mesh_proxy;
 	}
 	
 	return proxy_object;
@@ -112,7 +118,7 @@ Ref<ORC_PotatoCPP_SurfaceData> ORC_PotatoCPPProxyFactory::create_surface_data_fr
 	Ref<RDVertexAttribute> attr;
 	attr.instantiate();
 	attr->set_format(RenderingDevice::DATA_FORMAT_R32G32B32_SFLOAT);
-	attr->set_stride(0);
+	attr->set_stride(12);
 	attr->set_offset(0);
 	attr->set_location(0);
 	attr->set_frequency(RenderingDevice::VERTEX_FREQUENCY_VERTEX);

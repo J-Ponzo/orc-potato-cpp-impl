@@ -14,11 +14,10 @@ class ORC_PotatoCPPRenderer : public ORC_RendererBase {
 protected:
 	static void _bind_methods();
 
-private:
+public:
 	Ref<ORC_PotatoCPP_CameraData> current_cam_data;
 	TypedArray<ORC_PotatoCPP_SurfaceData> surfaces_data;
 
-public:
 	ORC_PotatoCPPRenderer() = default;
 	~ORC_PotatoCPPRenderer() = default;
 
