@@ -1,8 +1,6 @@
-[gd_resource type="Resource" script_class="ORC_Renderer_Def" load_steps=12 format=3 uid="uid://bvmqw3ocyxqlf"]
+[gd_resource type="Resource" script_class="ORC_Renderer_Def" load_steps=10 format=3 uid="uid://bvmqw3ocyxqlf"]
 
 [ext_resource type="Script" uid="uid://b0c0mwr6sl3i8" path="res://addons/open-render-craft/scripts/definitions/attachment_format_def.gd" id="1_bk3g3"]
-[ext_resource type="Script" uid="uid://d1octrgyict0t" path="res://orc-renderers-impl/orc-potato-gd-impl/scripts/potato_gd_proxy_factory.gd" id="2_omtpg"]
-[ext_resource type="Script" uid="uid://dc1h8f6w8okcw" path="res://addons/open-render-craft/scripts/definitions/gd_impl_def.gd" id="3_c7ca8"]
 [ext_resource type="Script" uid="uid://com365fgp3i77" path="res://addons/open-render-craft/scripts/definitions/cpp_impl_def.gd" id="4_1nnes"]
 [ext_resource type="Script" uid="uid://bi1q4yltghow7" path="res://addons/open-render-craft/scripts/definitions/render_pass_def.gd" id="5_pkeab"]
 [ext_resource type="Resource" uid="uid://c5s8a3iitd7id" path="res://orc-renderers-impl/orc-potato-gd-impl/definitions/potato_gd_single_pass.tres" id="6_jtpn8"]
@@ -20,10 +18,10 @@ format = 125
 usage_flags = Array[int]([4])
 metadata/_custom_type_script = "uid://b0c0mwr6sl3i8"
 
-[sub_resource type="Resource" id="Resource_qmd5f"]
-script = ExtResource("3_c7ca8")
-gd_script = ExtResource("2_omtpg")
-metadata/_custom_type_script = "uid://dc1h8f6w8okcw"
+[sub_resource type="Resource" id="Resource_16aya"]
+script = ExtResource("4_1nnes")
+cpp_class_name = &"ORC_PotatoCPPProxyFactory"
+metadata/_custom_type_script = "uid://com365fgp3i77"
 
 [sub_resource type="Resource" id="Resource_5lfjk"]
 script = ExtResource("4_1nnes")
@@ -33,7 +31,7 @@ metadata/_custom_type_script = "uid://com365fgp3i77"
 [resource]
 script = ExtResource("7_qge5s")
 renderer_impl = SubResource("Resource_5lfjk")
-proxy_factory_impl = SubResource("Resource_qmd5f")
+proxy_factory_impl = SubResource("Resource_16aya")
 renderer_pass_defs = Dictionary[StringName, ExtResource("5_pkeab")]({
 &"Single": ExtResource("6_jtpn8")
 })

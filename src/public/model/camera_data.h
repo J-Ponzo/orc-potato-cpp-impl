@@ -4,10 +4,17 @@
 #include <godot_cpp/variant/transform3d.hpp>
 #include <godot_cpp/variant/packed_byte_array.hpp>
 #include <godot_cpp/variant/rid.hpp>
+#include <primary_data.h>
 
 using namespace godot;
 
-struct ORC_PotatoCPP_CameraData {
+class ORC_PotatoCPP_CameraData : public ORC_PrimaryData {
+    GDCLASS(ORC_PotatoCPP_CameraData, ORC_PrimaryData)
+
+protected:
+    static void _bind_methods();    // TODO : maybe not needed
+
+public:
     Transform3D view_transform;
     PackedByteArray view_matrix_bytes;
     PackedByteArray projection_matrix_bytes;

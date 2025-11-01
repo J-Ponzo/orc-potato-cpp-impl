@@ -2,14 +2,21 @@
 #define ORC_POTATO_CPP_MESH_DATA_H
 
 #include <godot_cpp/variant/packed_byte_array.hpp>
-#include <vector>
+#include <godot_cpp/variant/typed_array.hpp>
+#include <primary_data.h>
 
 using namespace godot;
 
-struct ORC_PotatoCPP_SurfaceData;
+class ORC_PotatoCPP_SurfaceData;
 
-struct ORC_PotatoCPP_MeshData {
-    std::vector<ORC_PotatoCPP_SurfaceData*> surfaces_data;
+class ORC_PotatoCPP_MeshData : public ORC_PrimaryData {
+    GDCLASS(ORC_PotatoCPP_MeshData, ORC_PrimaryData)
+
+protected:
+    static void _bind_methods();
+
+public:
+    TypedArray<ORC_PotatoCPP_SurfaceData> surfaces_data;
     PackedByteArray model_matrix_bytes;
 };
 
