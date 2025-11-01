@@ -86,8 +86,7 @@ Ref<ORC_PotatoCPP_CameraData> ORC_PotatoCPPProxyFactory::create_camera_data_from
 	PackedByteArray bytes = cam_data->view_matrix_bytes;
 	bytes.append_array(cam_data->projection_matrix_bytes);
 
-	RenderingDevice* rd = RenderingServer::get_singleton()->get_rendering_device();
-	cam_data->matrices_uniform_buffer = rd->uniform_buffer_create(bytes.size(), bytes);
+	cam_data->matrices_uniform_buffer = ORC_RDHelper::get_rd()->uniform_buffer_create(bytes.size(), bytes);
 	
 	return cam_data;
 }
@@ -115,18 +114,9 @@ Ref<ORC_PotatoCPP_SurfaceData> ORC_PotatoCPPProxyFactory::create_surface_data_fr
 	Ref<BaseMaterial3D> material = mesh->surface_get_material(surface_index);
 	surface_data->material_data = create_material_data_from(material, mesh_data, cache);
 
-    // TODO find a way to centralize this (ORC_RendererFactory might be moved to c++)
-	RenderingDevice* rd = RenderingServer::get_singleton()->get_rendering_device();
-	Ref<RDVertexAttribute> attr;
-	attr.instantiate();
-	attr->set_format(RenderingDevice::DATA_FORMAT_R32G32B32_SFLOAT);
-	attr->set_stride(12);
-	attr->set_offset(0);
-	attr->set_location(0);
-	attr->set_frequency(RenderingDevice::VERTEX_FREQUENCY_VERTEX);
-	
-	int64_t vf = rd->vertex_format_create(Array::make(attr));
-	surface_data->vertex_array = rd->vertex_array_create(
+	Ref<ORC_VertexFormatInfo> vf_info = memnew(ORC_VertexFormatInfo);
+	int64_t vf = ORC_RDHelper::create_vertex_format(vf_info);
+	surface_data->vertex_array = ORC_RDHelper::get_rd()->vertex_array_create(
 		surface_data->topology_data->vertex_count,
 		vf,
 		Array::make(surface_data->topology_data->position_buffer)
@@ -145,14 +135,13 @@ Ref<ORC_PotatoCPP_TopologyData> ORC_PotatoCPPProxyFactory::create_topology_data_
 	topology_data->index_count = indices.size();
 	
 	PackedByteArray byte_array = indices.to_byte_array();
-	RenderingDevice* rd = RenderingServer::get_singleton()->get_rendering_device();
-	topology_data->index_buffer = rd->index_buffer_create(indices.size(), RenderingDevice::INDEX_BUFFER_FORMAT_UINT32, byte_array);
-	topology_data->index_array = rd->index_array_create(topology_data->index_buffer, 0, topology_data->index_count);
+	topology_data->index_buffer = ORC_RDHelper::get_rd()->index_buffer_create(indices.size(), RenderingDevice::INDEX_BUFFER_FORMAT_UINT32, byte_array);
+	topology_data->index_array = ORC_RDHelper::get_rd()->index_array_create(topology_data->index_buffer, 0, topology_data->index_count);
 
 	PackedVector3Array vertices = arrays[Mesh::ARRAY_VERTEX];
 	topology_data->vertex_count = vertices.size();
 	byte_array = vertices.to_byte_array();
-	topology_data->position_buffer = rd->vertex_buffer_create(byte_array.size(), byte_array);
+	topology_data->position_buffer = ORC_RDHelper::get_rd()->vertex_buffer_create(byte_array.size(), byte_array);
 
 	return topology_data;
 }
@@ -172,8 +161,7 @@ Ref<ORC_PotatoCPP_MaterialData> ORC_PotatoCPPProxyFactory::create_material_data_
 		albedo_floats.append(albedo.a);
 		
 		PackedByteArray bytes = albedo_floats.to_byte_array();
-		RenderingDevice* rd = RenderingServer::get_singleton()->get_rendering_device();
-		material_data->albedo_buffer = rd->uniform_buffer_create(bytes.size(), bytes);
+		material_data->albedo_buffer = ORC_RDHelper::get_rd()->uniform_buffer_create(bytes.size(), bytes);
 	}
 
 	return material_data;
@@ -181,8 +169,7 @@ Ref<ORC_PotatoCPP_MaterialData> ORC_PotatoCPPProxyFactory::create_material_data_
 
 bool ORC_PotatoCPPProxyFactory::free_camera_data(Ref<ORC_PotatoCPP_CameraData> cam_data, Ref<ORC_ProxyCache> cache) {
 	if (cam_data->matrices_uniform_buffer.is_valid()) {
-		RenderingDevice* rd = RenderingServer::get_singleton()->get_rendering_device();
-		rd->free_rid(cam_data->matrices_uniform_buffer);
+		ORC_RDHelper::get_rd()->free_rid(cam_data->matrices_uniform_buffer);
 		cam_data->matrices_uniform_buffer = RID();
 	}
 	
@@ -198,18 +185,16 @@ bool ORC_PotatoCPPProxyFactory::free_surface_data(Ref<ORC_PotatoCPP_SurfaceData>
 }
 
 bool ORC_PotatoCPPProxyFactory::free_topology_data(Ref<ORC_PotatoCPP_TopologyData> topology_data, Ref<ORC_ProxyCache> cache) {
-	RenderingDevice* rd = RenderingServer::get_singleton()->get_rendering_device();
-	
 	if (topology_data->index_array.is_valid()) {
-		rd->free_rid(topology_data->index_array);
+		ORC_RDHelper::get_rd()->free_rid(topology_data->index_array);
 		topology_data->index_array = RID();
 	}
 	if (topology_data->index_buffer.is_valid()) {
-		rd->free_rid(topology_data->index_buffer);
+		ORC_RDHelper::get_rd()->free_rid(topology_data->index_buffer);
 		topology_data->index_buffer = RID();
 	}
 	if (topology_data->position_buffer.is_valid()) {
-		rd->free_rid(topology_data->position_buffer);
+		ORC_RDHelper::get_rd()->free_rid(topology_data->position_buffer);
 		topology_data->position_buffer = RID();
 	}
 	
@@ -218,8 +203,7 @@ bool ORC_PotatoCPPProxyFactory::free_topology_data(Ref<ORC_PotatoCPP_TopologyDat
 
 bool ORC_PotatoCPPProxyFactory::free_material_data(Ref<ORC_PotatoCPP_MaterialData> material_data, Ref<ORC_ProxyCache> cache) {
 	if (material_data->albedo_buffer.is_valid()) {
-		RenderingDevice* rd = RenderingServer::get_singleton()->get_rendering_device();
-		rd->free_rid(material_data->albedo_buffer);
+		ORC_RDHelper::get_rd()->free_rid(material_data->albedo_buffer);
 		material_data->albedo_buffer = RID();
 	}
 	
