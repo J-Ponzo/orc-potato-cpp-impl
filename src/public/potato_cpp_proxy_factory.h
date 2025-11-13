@@ -30,26 +30,27 @@ public:
 	~ORC_PotatoCPPProxyFactory() = default;
 
 	Ref<ORC_ProxyObject> create_proxy_from_impl(Node* node) override;
-	Ref<ORC_PrimaryData> create_data_from_impl(Node* node, Ref<ORC_ProxyRegistry> cache) override;
+	Ref<ORC_PrimaryData> create_data_from_impl(Node* node, Ref<ORC_ProxyRegistry> registry) override;
 	bool free_proxy_impl(Ref<ORC_ProxyObject> proxy_object) override;
-	bool free_data_impl(Ref<ORC_ProxyData> data, Ref<ORC_ProxyRegistry> cache) override;
+	bool free_data_impl(Ref<ORC_ProxyData> data, Ref<ORC_ProxyRegistry> registry) override;
 
 	static PackedByteArray proj_to_bytes(const Projection& proj); // TODO implement this the c++ way
 
 private:
-	Ref<ORC_PotatoCPP_CameraData> create_camera_data_from(Camera3D* cam_node, Ref<ORC_ProxyRegistry> cache);
-	Ref<ORC_PotatoCPP_MeshData> create_mesh_data_from(MeshInstance3D* mesh_node, Ref<ORC_ProxyRegistry> cache);
-	Ref<ORC_PotatoCPP_SurfaceData> create_surface_data_from(Ref<Mesh> mesh, Ref<ORC_PotatoCPP_MeshData> mesh_data, int surface_index, Ref<ORC_ProxyRegistry> cache);
-	Ref<ORC_PotatoCPP_TopologyData> create_topology_data_from(Ref<Mesh> mesh, Ref<ORC_PotatoCPP_MeshData> mesh_data, int surface_index, Ref<ORC_ProxyRegistry> cache);
-	Ref<ORC_PotatoCPP_MaterialData> create_material_data_from(Ref<BaseMaterial3D> material, Ref<ORC_PotatoCPP_MeshData> mesh_data, Ref<ORC_ProxyRegistry> cache);
+	Ref<ORC_PotatoCPP_CameraData> create_camera_data_from(Camera3D* cam_node, Ref<ORC_ProxyRegistry> registry);
+	Ref<ORC_PotatoCPP_MeshData> create_mesh_data_from(MeshInstance3D* mesh_node, Ref<ORC_ProxyRegistry> registry);
+	Ref<ORC_PotatoCPP_SurfaceData> create_surface_data_from(Ref<Mesh> mesh, Ref<ORC_PotatoCPP_MeshData> mesh_data, int surface_index, Ref<ORC_ProxyRegistry> registry);
+	Ref<ORC_PotatoCPP_TopologyData> create_topology_data_from(Ref<Mesh> mesh, Ref<ORC_PotatoCPP_MeshData> mesh_data, int surface_index, Ref<ORC_ProxyRegistry> registry);
+	Ref<ORC_PotatoCPP_MaterialData> create_material_data_from(Ref<BaseMaterial3D> material, Ref<ORC_PotatoCPP_MeshData> mesh_data, Ref<ORC_ProxyRegistry> registry);
 
-	bool free_camera_data(Ref<ORC_PotatoCPP_CameraData> cam_data, Ref<ORC_ProxyRegistry> cache);
-	bool free_mesh_data(Ref<ORC_PotatoCPP_MeshData> mesh_data, Ref<ORC_ProxyRegistry> cache);
-	bool free_surface_data(Ref<ORC_PotatoCPP_SurfaceData> surface_data, Ref<ORC_ProxyRegistry> cache);
-	bool free_topology_data(Ref<ORC_PotatoCPP_TopologyData> topology_data, Ref<ORC_ProxyRegistry> cache);
-	bool free_material_data(Ref<ORC_PotatoCPP_MaterialData> material_data, Ref<ORC_ProxyRegistry> cache);
+	bool free_camera_data(Ref<ORC_PotatoCPP_CameraData> cam_data, Ref<ORC_ProxyRegistry> registry);
+	bool free_mesh_data(Ref<ORC_PotatoCPP_MeshData> mesh_data, Ref<ORC_ProxyRegistry> registry);
+	bool free_surface_data(Ref<ORC_PotatoCPP_SurfaceData> surface_data, Ref<ORC_ProxyRegistry> registry);
+	bool free_topology_data(Ref<ORC_PotatoCPP_TopologyData> topology_data, Ref<ORC_ProxyRegistry> registry);
+	bool free_material_data(Ref<ORC_PotatoCPP_MaterialData> material_data, Ref<ORC_ProxyRegistry> registry);
 };
 
 }
 
 #endif
+
