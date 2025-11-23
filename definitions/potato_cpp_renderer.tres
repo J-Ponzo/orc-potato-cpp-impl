@@ -1,8 +1,11 @@
-[gd_resource type="Resource" script_class="ORC_Renderer_Def" load_steps=10 format=3 uid="uid://bvmqw3ocyxqlf"]
+[gd_resource type="Resource" script_class="ORC_Renderer_Def" load_steps=19 format=3 uid="uid://bvmqw3ocyxqlf"]
 
 [ext_resource type="Script" uid="uid://b0c0mwr6sl3i8" path="res://addons/open-render-craft/scripts/definitions/attachment_format_def.gd" id="1_bk3g3"]
+[ext_resource type="Script" uid="uid://btess53icv55y" path="res://addons/open-render-craft/scripts/definitions/proxy_queue_def.gd" id="3_upnqr"]
 [ext_resource type="Script" uid="uid://com365fgp3i77" path="res://addons/open-render-craft/scripts/definitions/cpp_impl_def.gd" id="4_1nnes"]
+[ext_resource type="Script" uid="uid://ncajj0vcwae2" path="res://addons/open-render-craft/scripts/definitions/data_query_def.gd" id="4_5lfjk"]
 [ext_resource type="Resource" uid="uid://ch3ytl6wyoibw" path="res://orc-renderers-impl/orc-potato-cpp-impl/definitions/potato_cpp_single_pass.tres" id="4_16aya"]
+[ext_resource type="Script" uid="uid://t3cacy5x1gwe" path="res://addons/open-render-craft/scripts/definitions/impl_def.gd" id="5_msglh"]
 [ext_resource type="Script" uid="uid://bi1q4yltghow7" path="res://addons/open-render-craft/scripts/definitions/render_pass_def.gd" id="5_pkeab"]
 [ext_resource type="Script" uid="uid://bugchofvgrin8" path="res://addons/open-render-craft/scripts/definitions/renderer_def.gd" id="7_qge5s"]
 
@@ -23,6 +26,38 @@ script = ExtResource("4_1nnes")
 cpp_class_name = &"ORC_PotatoCPPProxyFactory"
 metadata/_custom_type_script = "uid://com365fgp3i77"
 
+[sub_resource type="Resource" id="Resource_2dfq6"]
+script = ExtResource("4_1nnes")
+cpp_class_name = &"ORC_PotatoCPP_CameraData"
+metadata/_custom_type_script = "uid://com365fgp3i77"
+
+[sub_resource type="Resource" id="Resource_utyej"]
+script = ExtResource("4_5lfjk")
+type = SubResource("Resource_2dfq6")
+metadata/_custom_type_script = "uid://ncajj0vcwae2"
+
+[sub_resource type="Resource" id="Resource_xg31r"]
+script = ExtResource("3_upnqr")
+queue_name = &"cameras"
+init_query = SubResource("Resource_utyej")
+metadata/_custom_type_script = "uid://btess53icv55y"
+
+[sub_resource type="Resource" id="Resource_msglh"]
+script = ExtResource("4_1nnes")
+cpp_class_name = &"ORC_PotatoCPP_SurfaceData"
+metadata/_custom_type_script = "uid://com365fgp3i77"
+
+[sub_resource type="Resource" id="Resource_fi0fh"]
+script = ExtResource("4_5lfjk")
+type = SubResource("Resource_msglh")
+metadata/_custom_type_script = "uid://ncajj0vcwae2"
+
+[sub_resource type="Resource" id="Resource_bynkj"]
+script = ExtResource("3_upnqr")
+queue_name = &"surfaces"
+init_query = SubResource("Resource_fi0fh")
+metadata/_custom_type_script = "uid://btess53icv55y"
+
 [sub_resource type="Resource" id="Resource_5lfjk"]
 script = ExtResource("4_1nnes")
 cpp_class_name = &"ORC_PotatoCPPRenderer"
@@ -39,4 +74,5 @@ attachment_format_defs = Dictionary[StringName, ExtResource("1_bk3g3")]({
 &"Albedo": SubResource("Resource_gx8ab"),
 &"Depth": SubResource("Resource_5fylr")
 })
+proxy_queue_defs = Array[ExtResource("3_upnqr")]([SubResource("Resource_xg31r"), SubResource("Resource_bynkj")])
 metadata/_custom_type_script = "uid://bugchofvgrin8"
