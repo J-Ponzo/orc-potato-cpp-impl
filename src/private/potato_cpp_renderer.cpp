@@ -45,7 +45,6 @@ void ORC_PotatoCPPRenderer::render_impl() {
 }
 
 RID ORC_PotatoCPPRenderer::get_render_target_impl() {
-    UtilityFunctions::print(scene_proxy->dump_registry());
 	return attachments["Albedo"];
 }
 
