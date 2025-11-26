@@ -13,6 +13,7 @@
 #include <mesh_proxy.h>
 
 #include <impl_registry.h>
+#include <proxy_registry.h>
 #include <gdextension_interface.h>
 #include <godot_cpp/core/defs.hpp>
 #include <godot_cpp/godot.hpp>
@@ -28,14 +29,14 @@ void initialize_potato_cpp_module(ModuleInitializationLevel p_level) {
 	GDREGISTER_RUNTIME_CLASS(ORC_PotatoCPPProxyFactory);
 	GDREGISTER_RUNTIME_CLASS(ORC_PotatoCPPSinglePass);
 	
-	// TODO do not register those
 	GDREGISTER_RUNTIME_CLASS(ORC_PotatoCPP_CameraProxy);
 	GDREGISTER_RUNTIME_CLASS(ORC_PotatoCPP_MeshProxy);
-	GDREGISTER_RUNTIME_CLASS(ORC_PotatoCPP_CameraData);
-	GDREGISTER_RUNTIME_CLASS(ORC_PotatoCPP_MeshData);
-	GDREGISTER_RUNTIME_CLASS(ORC_PotatoCPP_MaterialData);
-	GDREGISTER_RUNTIME_CLASS(ORC_PotatoCPP_TopologyData);
-	GDREGISTER_RUNTIME_CLASS(ORC_PotatoCPP_SurfaceData);
+
+	ORC_REGISTER_PROXY_DATA_TYPE(ORC_PotatoCPP_CameraData);
+	ORC_REGISTER_PROXY_DATA_TYPE(ORC_PotatoCPP_MeshData);
+	ORC_REGISTER_PROXY_DATA_TYPE(ORC_PotatoCPP_MaterialData);
+	ORC_REGISTER_PROXY_DATA_TYPE(ORC_PotatoCPP_TopologyData);
+	ORC_REGISTER_PROXY_DATA_TYPE(ORC_PotatoCPP_SurfaceData);
 }
 
 void uninitialize_potato_cpp_module(ModuleInitializationLevel p_level) {

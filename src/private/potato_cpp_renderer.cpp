@@ -16,8 +16,10 @@ void ORC_PotatoCPPRenderer::pre_render_impl() {
 	ORC_RendererBase::pre_render_impl();
 	
 	current_cam_data = Ref<ORC_PotatoCPP_CameraData>();
-	std::vector<Ref<ORC_PotatoCPP_CameraData>> cameras_data = scene_proxy->get_by_type<ORC_PotatoCPP_CameraData>();
-	for (const auto& camera_data : cameras_data) {
+	TypedArray<ORC_ProxyData> cameras_data = scene_proxy->fetch_queue_data("cameras");
+	for (int i = 0; i < cameras_data.size(); i++) {
+		Ref<ORC_ProxyData> proxy_data = cameras_data[i];
+		Ref<ORC_PotatoCPP_CameraData> camera_data = Object::cast_to<ORC_PotatoCPP_CameraData>(proxy_data.ptr());
 		if (camera_data.is_valid() && camera_data->proxy_object.is_valid()) {
 			Camera3D* cam_node = Object::cast_to<Camera3D>(camera_data->proxy_object->node);
 			if (cam_node && cam_node->is_current()) {
@@ -28,8 +30,10 @@ void ORC_PotatoCPPRenderer::pre_render_impl() {
 	}
 	
 	surfaces_data.clear();
-	std::vector<Ref<ORC_PotatoCPP_SurfaceData>> non_casted_surfaces_data = scene_proxy->get_by_type<ORC_PotatoCPP_SurfaceData>();
-	for (const auto& surface_data : non_casted_surfaces_data) {
+	TypedArray<ORC_ProxyData> surfaces_data_array = scene_proxy->fetch_queue_data("surfaces");
+	for (int i = 0; i < surfaces_data_array.size(); i++) {
+		Ref<ORC_ProxyData> proxy_data = surfaces_data_array[i];
+		Ref<ORC_PotatoCPP_SurfaceData> surface_data = Object::cast_to<ORC_PotatoCPP_SurfaceData>(proxy_data.ptr());
 		if (surface_data.is_valid()) {
 			surfaces_data.append(surface_data);
 		}

@@ -23,6 +23,8 @@ void ORC_PotatoCPPSinglePass::setup_impl() {
 void ORC_PotatoCPPSinglePass::render_impl() {
 	Ref<ORC_PotatoCPPRenderer> potato_renderer = renderer;
 
+	if (!potato_renderer->current_cam_data.is_valid()) return;
+
 	// Create matrices uniform
 	Ref<RDUniform> matrices_uniform;
 	matrices_uniform.instantiate();
