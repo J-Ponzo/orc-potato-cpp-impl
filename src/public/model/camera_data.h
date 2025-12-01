@@ -12,7 +12,7 @@ class ORC_PotatoCPP_CameraData : public ORC_PrimaryData {
     GDCLASS(ORC_PotatoCPP_CameraData, ORC_PrimaryData)
 
 protected:
-    static void _bind_methods();    // TODO : maybe not needed
+    static void _bind_methods();
 
 public:
     Transform3D view_transform;
