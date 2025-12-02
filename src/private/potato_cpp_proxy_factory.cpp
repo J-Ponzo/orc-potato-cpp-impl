@@ -27,7 +27,7 @@ Ref<ORC_ProxyObject> ORC_PotatoCPPProxyFactory::create_proxy_from_impl(Node* nod
 	return proxy_object;
 }
 
-Ref<ORC_PrimaryData> ORC_PotatoCPPProxyFactory::create_data_from_impl(Node* node, Ref<ORC_ProxyRegistry> registry) {
+Ref<ORC_PrimaryData> ORC_PotatoCPPProxyFactory::create_data_from_impl(Node* node, const Ref<ORC_ProxyRegistry>& registry) {
 	Ref<ORC_PrimaryData> primary_data;
 	
 	if (Camera3D* cam_node = Object::cast_to<Camera3D>(node)) {
@@ -39,11 +39,11 @@ Ref<ORC_PrimaryData> ORC_PotatoCPPProxyFactory::create_data_from_impl(Node* node
 	return primary_data;
 }
 
-bool ORC_PotatoCPPProxyFactory::free_proxy_impl(Ref<ORC_ProxyObject> proxy_object) {
+bool ORC_PotatoCPPProxyFactory::free_proxy_impl(const Ref<ORC_ProxyObject>& proxy_object) {
 	return true;
 }
 
-bool ORC_PotatoCPPProxyFactory::free_data_impl(Ref<ORC_ProxyData> data, Ref<ORC_ProxyRegistry> registry) {
+bool ORC_PotatoCPPProxyFactory::free_data_impl(const Ref<ORC_ProxyData>& data, const Ref<ORC_ProxyRegistry>& registry) {
 	if (!data.is_valid()) {
 		return false;
 	}
@@ -76,7 +76,7 @@ bool ORC_PotatoCPPProxyFactory::free_data_impl(Ref<ORC_ProxyData> data, Ref<ORC_
 	return false;
 }
 
-Ref<ORC_PotatoCPP_CameraData> ORC_PotatoCPPProxyFactory::create_camera_data_from(Camera3D* cam_node, Ref<ORC_ProxyRegistry> registry) {
+Ref<ORC_PotatoCPP_CameraData> ORC_PotatoCPPProxyFactory::create_camera_data_from(Camera3D* cam_node, const Ref<ORC_ProxyRegistry>& registry) {
 	Ref<ORC_PotatoCPP_CameraData> cam_data = create_and_register_primary<ORC_PotatoCPP_CameraData>(registry);
 	
 	cam_data->view_transform = cam_node->get_camera_transform().affine_inverse();
@@ -91,7 +91,7 @@ Ref<ORC_PotatoCPP_CameraData> ORC_PotatoCPPProxyFactory::create_camera_data_from
 	return cam_data;
 }
 
-Ref<ORC_PotatoCPP_MeshData> ORC_PotatoCPPProxyFactory::create_mesh_data_from(MeshInstance3D* mesh_node, Ref<ORC_ProxyRegistry> registry) {
+Ref<ORC_PotatoCPP_MeshData> ORC_PotatoCPPProxyFactory::create_mesh_data_from(MeshInstance3D* mesh_node, const Ref<ORC_ProxyRegistry>& registry) {
 	Ref<ORC_PotatoCPP_MeshData> mesh_data = create_and_register_primary<ORC_PotatoCPP_MeshData>(registry);
 	mesh_data->model_matrix_bytes = proj_to_bytes(Projection(mesh_node->get_global_transform()));
 
@@ -106,7 +106,7 @@ Ref<ORC_PotatoCPP_MeshData> ORC_PotatoCPPProxyFactory::create_mesh_data_from(Mes
 	return mesh_data;
 }
 
-Ref<ORC_PotatoCPP_SurfaceData> ORC_PotatoCPPProxyFactory::create_surface_data_from(Ref<Mesh> mesh, Ref<ORC_PotatoCPP_MeshData> mesh_data, int surface_index, Ref<ORC_ProxyRegistry> registry) {
+Ref<ORC_PotatoCPP_SurfaceData> ORC_PotatoCPPProxyFactory::create_surface_data_from(const Ref<Mesh>& mesh, const Ref<ORC_PotatoCPP_MeshData>& mesh_data, int surface_index, const Ref<ORC_ProxyRegistry>& registry) {
 	Ref<ORC_PotatoCPP_SurfaceData> surface_data = create_and_register_secondary<ORC_PotatoCPP_SurfaceData>(registry, mesh_data);
 	surface_data->mesh_data = mesh_data;
 	surface_data->topology_data = create_topology_data_from(mesh, mesh_data, surface_index, registry);
@@ -125,7 +125,7 @@ Ref<ORC_PotatoCPP_SurfaceData> ORC_PotatoCPPProxyFactory::create_surface_data_fr
 	return surface_data;
 }
 
-Ref<ORC_PotatoCPP_TopologyData> ORC_PotatoCPPProxyFactory::create_topology_data_from(Ref<Mesh> mesh, Ref<ORC_PotatoCPP_MeshData> mesh_data, int surface_index, Ref<ORC_ProxyRegistry> registry) {
+Ref<ORC_PotatoCPP_TopologyData> ORC_PotatoCPPProxyFactory::create_topology_data_from(const Ref<Mesh>& mesh, const Ref<ORC_PotatoCPP_MeshData>& mesh_data, int surface_index, const Ref<ORC_ProxyRegistry>& registry) {
 	int64_t unique_id = mesh->get_instance_id();
 	Ref<ORC_PotatoCPP_TopologyData> topology_data = create_and_register_secondary<ORC_PotatoCPP_TopologyData>(registry, mesh_data, unique_id);
 	topology_data->unique_id = mesh->get_instance_id();
@@ -146,7 +146,7 @@ Ref<ORC_PotatoCPP_TopologyData> ORC_PotatoCPPProxyFactory::create_topology_data_
 	return topology_data;
 }
 
-Ref<ORC_PotatoCPP_MaterialData> ORC_PotatoCPPProxyFactory::create_material_data_from(Ref<BaseMaterial3D> material, Ref<ORC_PotatoCPP_MeshData> mesh_data, Ref<ORC_ProxyRegistry> registry) {
+Ref<ORC_PotatoCPP_MaterialData> ORC_PotatoCPPProxyFactory::create_material_data_from(const Ref<BaseMaterial3D>& material, const Ref<ORC_PotatoCPP_MeshData>& mesh_data, const Ref<ORC_ProxyRegistry>& registry) {
 	int64_t unique_id = material.is_valid() ? material->get_instance_id() : -1;
 	Ref<ORC_PotatoCPP_MaterialData> material_data = create_and_register_secondary<ORC_PotatoCPP_MaterialData>(registry, mesh_data, unique_id);
 	
@@ -167,7 +167,7 @@ Ref<ORC_PotatoCPP_MaterialData> ORC_PotatoCPPProxyFactory::create_material_data_
 	return material_data;
 }
 
-bool ORC_PotatoCPPProxyFactory::free_camera_data(Ref<ORC_PotatoCPP_CameraData> cam_data, Ref<ORC_ProxyRegistry> registry) {
+bool ORC_PotatoCPPProxyFactory::free_camera_data(const Ref<ORC_PotatoCPP_CameraData>& cam_data, const Ref<ORC_ProxyRegistry>& registry) {
 	if (cam_data->matrices_uniform_buffer.is_valid()) {
 		ORC_RDHelper::get_rd()->free_rid(cam_data->matrices_uniform_buffer);
 		cam_data->matrices_uniform_buffer = RID();
@@ -176,15 +176,15 @@ bool ORC_PotatoCPPProxyFactory::free_camera_data(Ref<ORC_PotatoCPP_CameraData> c
 	return registry->unregister_data(cam_data);
 }
 
-bool ORC_PotatoCPPProxyFactory::free_mesh_data(Ref<ORC_PotatoCPP_MeshData> mesh_data, Ref<ORC_ProxyRegistry> registry) {
+bool ORC_PotatoCPPProxyFactory::free_mesh_data(const Ref<ORC_PotatoCPP_MeshData>& mesh_data, const Ref<ORC_ProxyRegistry>& registry) {
 	return registry->unregister_data(mesh_data);
 }
 
-bool ORC_PotatoCPPProxyFactory::free_surface_data(Ref<ORC_PotatoCPP_SurfaceData> surface_data, Ref<ORC_ProxyRegistry> registry) {
+bool ORC_PotatoCPPProxyFactory::free_surface_data(const Ref<ORC_PotatoCPP_SurfaceData>& surface_data, const Ref<ORC_ProxyRegistry>& registry) {
 	return registry->unregister_data(surface_data);
 }
 
-bool ORC_PotatoCPPProxyFactory::free_topology_data(Ref<ORC_PotatoCPP_TopologyData> topology_data, Ref<ORC_ProxyRegistry> registry) {
+bool ORC_PotatoCPPProxyFactory::free_topology_data(const Ref<ORC_PotatoCPP_TopologyData>& topology_data, const Ref<ORC_ProxyRegistry>& registry) {
 	if (topology_data->index_array.is_valid()) {
 		ORC_RDHelper::get_rd()->free_rid(topology_data->index_array);
 		topology_data->index_array = RID();
@@ -201,7 +201,7 @@ bool ORC_PotatoCPPProxyFactory::free_topology_data(Ref<ORC_PotatoCPP_TopologyDat
 	return registry->unregister_data(topology_data);
 }
 
-bool ORC_PotatoCPPProxyFactory::free_material_data(Ref<ORC_PotatoCPP_MaterialData> material_data, Ref<ORC_ProxyRegistry> registry) {
+bool ORC_PotatoCPPProxyFactory::free_material_data(const Ref<ORC_PotatoCPP_MaterialData>& material_data, const Ref<ORC_ProxyRegistry>& registry) {
 	if (material_data->albedo_buffer.is_valid()) {
 		ORC_RDHelper::get_rd()->free_rid(material_data->albedo_buffer);
 		material_data->albedo_buffer = RID();
