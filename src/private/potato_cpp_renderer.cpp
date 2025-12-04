@@ -41,11 +41,11 @@ void ORC_PotatoCPPRenderer::pre_render_impl() {
 }
 
 void ORC_PotatoCPPRenderer::render_impl() {
-    ((Ref<ORC_RenderPassBase>)render_passes["Single"])->render();
+    get_render_pass("Single")->render();
 }
 
 RID ORC_PotatoCPPRenderer::get_render_target_impl() {
-	return attachments["Albedo"];
+	return get_attachment("Albedo");
 }
 
 void ORC_PotatoCPPRenderer::cleanup_impl() {
