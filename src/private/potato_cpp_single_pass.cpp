@@ -33,7 +33,7 @@ void ORC_PotatoCPPSinglePass::render_impl() {
 	matrices_uniform->add_id(potato_renderer->current_cam_data->matrices_uniform_buffer);
 
 	// Get PSO from dictionary
-	Ref<ORC_PSO> potato_pso = explicits_pso["Potato_PSO"];
+	Ref<ORC_PSO> potato_pso = direct_psos["Potato_PSO"];
 	RID matrices_uniform_set = ORC_RDHelper::get_rd()->uniform_set_create(Array::make(matrices_uniform), potato_pso->shader_program, 0);
 
 	// Begin draw list
