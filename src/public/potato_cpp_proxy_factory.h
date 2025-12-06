@@ -34,8 +34,6 @@ public:
 	bool free_proxy_impl(const Ref<ORC_ProxyObject>& proxy_object) override;
 	bool free_data_impl(const Ref<ORC_ProxyData>& data, const Ref<ORC_ProxyRegistry>& registry) override;
 
-	static PackedByteArray proj_to_bytes(const Projection& proj); // TODO implement this the c++ way
-
 private:
 	Ref<ORC_PotatoCPP_CameraData> create_camera_data_from(Camera3D* cam_node, const Ref<ORC_ProxyRegistry>& registry);
 	Ref<ORC_PotatoCPP_MeshData> create_mesh_data_from(MeshInstance3D* mesh_node, const Ref<ORC_ProxyRegistry>& registry);

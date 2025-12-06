@@ -80,8 +80,8 @@ Ref<ORC_PotatoCPP_CameraData> ORC_PotatoCPPProxyFactory::create_camera_data_from
 	Ref<ORC_PotatoCPP_CameraData> cam_data = create_and_register_primary<ORC_PotatoCPP_CameraData>(registry);
 	
 	cam_data->view_transform = cam_node->get_camera_transform().affine_inverse();
-	cam_data->view_matrix_bytes = proj_to_bytes(Projection(cam_data->view_transform));
-	cam_data->projection_matrix_bytes = proj_to_bytes(cam_node->get_camera_projection().flipped_y());
+	cam_data->view_matrix_bytes = ORC_RDHelper::proj_to_bytes(Projection(cam_data->view_transform));
+	cam_data->projection_matrix_bytes = ORC_RDHelper::proj_to_bytes(cam_node->get_camera_projection().flipped_y());
 
 	PackedByteArray bytes = cam_data->view_matrix_bytes;
 	bytes.append_array(cam_data->projection_matrix_bytes);
@@ -93,7 +93,7 @@ Ref<ORC_PotatoCPP_CameraData> ORC_PotatoCPPProxyFactory::create_camera_data_from
 
 Ref<ORC_PotatoCPP_MeshData> ORC_PotatoCPPProxyFactory::create_mesh_data_from(MeshInstance3D* mesh_node, const Ref<ORC_ProxyRegistry>& registry) {
 	Ref<ORC_PotatoCPP_MeshData> mesh_data = create_and_register_primary<ORC_PotatoCPP_MeshData>(registry);
-	mesh_data->model_matrix_bytes = proj_to_bytes(Projection(mesh_node->get_global_transform()));
+	mesh_data->model_matrix_bytes = ORC_RDHelper::proj_to_bytes(Projection(mesh_node->get_global_transform()));
 
 	Ref<Mesh> mesh = mesh_node->get_mesh();
 	if (mesh.is_valid()) {
@@ -209,26 +209,4 @@ bool ORC_PotatoCPPProxyFactory::free_material_data(const Ref<ORC_PotatoCPP_Mater
 	
 	return registry->unregister_data(material_data);
 }
-
-PackedByteArray ORC_PotatoCPPProxyFactory::proj_to_bytes(const Projection& proj) {
-	const int SIZEOF_MAT4 = 64;
-	PackedByteArray byte_array;
-	byte_array.resize(SIZEOF_MAT4);
-	
-	int offset = 0;
-	for (int i = 0; i < 4; i++) {
-		Vector4 column = proj.columns[i];
-		byte_array.encode_float(offset, column.x);
-		offset += 4;
-		byte_array.encode_float(offset, column.y);
-		offset += 4;
-		byte_array.encode_float(offset, column.z);
-		offset += 4;
-		byte_array.encode_float(offset, column.w);
-		offset += 4;
-	}
-	
-	return byte_array;
-}
-
 

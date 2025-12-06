@@ -3,7 +3,7 @@
 #include <godot_cpp/classes/camera3d.hpp>
 #include <godot_cpp/classes/rendering_server.hpp>
 #include <godot_cpp/classes/rendering_device.hpp>
-#include <potato_cpp_proxy_factory.h>
+#include <rd_helper.h>
 
 using namespace godot;
 
@@ -27,13 +27,13 @@ void ORC_PotatoCPP_CameraProxy::update_impl() {
 	bool has_changed = false;
 	if (cam_transform_last_frame != cam_transform) {
 		cam_data->view_transform = cam_transform.affine_inverse();
-		cam_data->view_matrix_bytes = ORC_PotatoCPPProxyFactory::proj_to_bytes(Projection(cam_data->view_transform));
+		cam_data->view_matrix_bytes = ORC_RDHelper::proj_to_bytes(Projection(cam_data->view_transform));
 		cam_transform_last_frame = cam_transform;
 		has_changed = true;
 	}
 
 	if (cam_proj_last_frame != cam_proj) {
-		cam_data->projection_matrix_bytes = ORC_PotatoCPPProxyFactory::proj_to_bytes(cam_proj.flipped_y());
+		cam_data->projection_matrix_bytes = ORC_RDHelper::proj_to_bytes(cam_proj.flipped_y());
 		cam_proj_last_frame = cam_proj;
 		has_changed = true;
 	}

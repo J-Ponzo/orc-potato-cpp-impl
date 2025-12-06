@@ -1,7 +1,7 @@
 #include <mesh_proxy.h>
 #include <mesh_data.h>
 #include <godot_cpp/classes/node3d.hpp>
-#include <potato_cpp_proxy_factory.h>
+#include <rd_helper.h>
 
 using namespace godot;
 
@@ -21,7 +21,7 @@ void ORC_PotatoCPP_MeshProxy::update_impl() {
 
 	Transform3D global_transform = node3d->get_global_transform();
 	if (global_transform_last_frame != global_transform) {
-		mesh_data->model_matrix_bytes = ORC_PotatoCPPProxyFactory::proj_to_bytes(Projection(global_transform));
+		mesh_data->model_matrix_bytes = ORC_RDHelper::proj_to_bytes(Projection(global_transform));
 		global_transform_last_frame = global_transform;
 	}
 }
