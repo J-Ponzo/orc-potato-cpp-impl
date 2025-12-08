@@ -128,6 +128,7 @@ Ref<ORC_PotatoCPP_SurfaceData> ORC_PotatoCPPProxyFactory::create_surface_data_fr
 Ref<ORC_PotatoCPP_TopologyData> ORC_PotatoCPPProxyFactory::create_topology_data_from(const Ref<Mesh>& mesh, const Ref<ORC_PotatoCPP_MeshData>& mesh_data, int surface_index, const Ref<ORC_ProxyRegistry>& registry) {
 	int64_t unique_id = mesh->get_instance_id();
 	Ref<ORC_PotatoCPP_TopologyData> topology_data = create_and_register_secondary<ORC_PotatoCPP_TopologyData>(registry, mesh_data, unique_id);
+	if (topology_data->is_shared()) return topology_data;
 	topology_data->unique_id = mesh->get_instance_id();
 
 	Array arrays = mesh->surface_get_arrays(surface_index);
@@ -149,7 +150,8 @@ Ref<ORC_PotatoCPP_TopologyData> ORC_PotatoCPPProxyFactory::create_topology_data_
 Ref<ORC_PotatoCPP_MaterialData> ORC_PotatoCPPProxyFactory::create_material_data_from(const Ref<BaseMaterial3D>& material, const Ref<ORC_PotatoCPP_MeshData>& mesh_data, const Ref<ORC_ProxyRegistry>& registry) {
 	int64_t unique_id = material.is_valid() ? material->get_instance_id() : -1;
 	Ref<ORC_PotatoCPP_MaterialData> material_data = create_and_register_secondary<ORC_PotatoCPP_MaterialData>(registry, mesh_data, unique_id);
-	
+	if (material_data->is_shared()) return material_data;
+
 	if (material.is_valid()) {
 		material_data->unique_id = material->get_instance_id();
 		
