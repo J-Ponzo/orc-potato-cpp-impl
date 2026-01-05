@@ -16,7 +16,7 @@ ORC_PotatoCPPSinglePass::~ORC_PotatoCPPSinglePass() {
 }
 
 void ORC_PotatoCPPSinglePass::setup_impl() {
-	setup();
+	ORC_RenderPassBase::setup_impl();
 	UtilityFunctions::print("ORC_PotatoCPPSinglePass.setup()");
 }
 
@@ -80,6 +80,6 @@ void ORC_PotatoCPPSinglePass::render_impl() {
 }
 
 void ORC_PotatoCPPSinglePass::cleanup_impl() {
-	cleanup();
+	ORC_RenderPassBase::cleanup_impl();
 	UtilityFunctions::print("ORC_PotatoCPPSinglePass.cleanup()");
 }
