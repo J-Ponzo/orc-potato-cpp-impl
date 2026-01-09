@@ -126,7 +126,8 @@ Ref<ORC_PotatoCPP_SurfaceData> ORC_PotatoCPPProxyFactory::create_surface_data_fr
 }
 
 Ref<ORC_PotatoCPP_TopologyData> ORC_PotatoCPPProxyFactory::create_topology_data_from(const Ref<Mesh>& mesh, const Ref<ORC_PotatoCPP_MeshData>& mesh_data, int surface_index, const Ref<ORC_ProxyRegistry>& registry) {
-	int64_t unique_id = mesh->get_instance_id();
+	String id_str = String::num_int64(mesh->get_instance_id()) + String::num_int64(surface_index);
+	int64_t unique_id = UtilityFunctions::hash(id_str);
 	Ref<ORC_PotatoCPP_TopologyData> topology_data = create_and_register_secondary<ORC_PotatoCPP_TopologyData>(registry, mesh_data, unique_id);
 	if (topology_data->is_shared()) return topology_data;
 	topology_data->unique_id = mesh->get_instance_id();
