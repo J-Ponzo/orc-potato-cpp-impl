@@ -40,7 +40,7 @@ void ORC_PotatoCPPSinglePass::render_impl() {
 	PackedColorArray clear_colors;
 	clear_colors.append(Color(0.0, 0.0, 0.0));
 	int64_t draw_flags = RenderingDevice::DRAW_CLEAR_ALL;
-	int64_t draw_list = ORC_RDHelper::get_rd()->draw_list_begin(framebuffer, draw_flags, clear_colors);
+	int64_t draw_list = ORC_RDHelper::get_rd()->draw_list_begin(get_framebuffer("Main"), draw_flags, clear_colors);
 
 	// Bind matrices uniform set and pipeline
 	ORC_RDHelper::get_rd()->draw_list_bind_uniform_set(draw_list, matrices_uniform_set, 0);
